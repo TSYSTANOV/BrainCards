@@ -33,34 +33,37 @@ export const createPairs = (parent) => {
   container.append(btnReturn, btnItem);
   section.append(container);
 
-  function cardController(data) {
-    let index = 0;
-
-    btnItem.querySelector(".card__front").textContent = data[index][0];
-    btnItem.querySelector(".card__back").textContent = data[index][1];
-
-    function flipCard() {
-      btnItem.classList.add("card__item_flipped");
-      btnItem.removeEventListener("click", flipCard);
+  function flipCard() {
+    console.log(btnItem.index)
+    btnItem.classList.add("card__item_flipped");
+    btnItem.removeEventListener("click", flipCard);
+    setTimeout(() => {
+      btnItem.classList.remove("card__item_flipped");
       setTimeout(() => {
-        btnItem.classList.remove("card__item_flipped");
-        setTimeout(() => {
-          index++;
-          if (index === data.length) {
-            btnItem.querySelector(".card__front").textContent = "the end";
-            showAlert("Вернемся к категориям");
+        btnItem.index++;
+        if (btnItem.index === dataCards.length) {
+          btnItem.querySelector(".card__front").textContent = "the end";
+          showAlert("Вернемся к категориям");
 
-            setTimeout(() => {
-              btnReturn.click();
-            }, 2000);
-            return;
-          }
-          btnItem.querySelector(".card__front").textContent = data[index][0];
-          btnItem.querySelector(".card__back").textContent = data[index][1];
-          btnItem.addEventListener("click", flipCard);
-        }, 100);
-      }, 1000);
-    }
+          setTimeout(() => {
+            btnReturn.click();
+          }, 2000);
+          return;
+        }
+        btnItem.querySelector(".card__front").textContent = dataCards[btnItem.index][0];
+        btnItem.querySelector(".card__back").textContent = dataCards[btnItem.index][1];
+        btnItem.addEventListener("click", flipCard);
+      }, 100);
+    }, 1000);
+  }
+
+  let dataCards = []
+
+  function cardController(data) {
+    dataCards = [...data]
+    btnItem.index = 0
+    btnItem.querySelector(".card__front").textContent = data[btnItem.index][0];
+    btnItem.querySelector(".card__back").textContent = data[btnItem.index][1];
 
     btnItem.addEventListener("click", flipCard);
   }
@@ -71,6 +74,7 @@ export const createPairs = (parent) => {
   }
   function unmount() {
     section.remove();
+    btnItem.removeEventListener("click", flipCard);
   }
   return { mount, unmount, btnReturn };
 };

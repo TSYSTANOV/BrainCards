@@ -39,3 +39,67 @@ export const fetchCards = async (id) => {
         return error
     }
 }
+
+async function fetchEditCategory(id, data){
+    try{
+        const response = await fetch(`${API_URL}/api/category/${id}`,{
+            method:'PATCH',
+            body:JSON.stringify(data)
+        })
+        if(response.status === 200 || response.status === 201){
+            const categories = await response.json()
+            return categories
+        }
+        else{
+            const error = await response.json()
+            return error
+        }
+        
+    }
+    catch(error){
+        return error
+    }
+}
+
+async function fetchCreateCategory(data){
+    try{
+        const response = await fetch(`${API_URL}/api/category`,{
+            method:'POST',
+            body:JSON.stringify(data)
+        })
+        if(response.status === 200 || response.status === 201){
+            const categories = await response.json()
+            return categories
+        }
+        else{
+            const error = await response.json()
+            return error
+        }
+        
+    }
+    catch(error){
+        return error
+    }
+}
+
+async function fetchDeleteCategory(id){
+    try{
+        const response = await fetch(`${API_URL}/api/category/${id}`,{
+            method:'DELETE'
+        })
+        if(response.status === 200 || response.status === 201){
+            const categories = await response.json()
+            return categories
+        }
+        else{
+            const error = await response.json()
+            return error
+        }
+        
+    }
+    catch(error){
+        return error
+    }
+}
+
+export { fetchCreateCategory, fetchEditCategory, fetchDeleteCategory}

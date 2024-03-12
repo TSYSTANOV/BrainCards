@@ -38,6 +38,7 @@ export const createEditCategory = (parent) => {
     const btnSave = document.createElement('button')
     btnSave.className = 'edit__btn edit__save'
     btnSave.textContent = 'Сохранить категорию'
+  
 
     const btnCancel = document.createElement('button')
     btnCancel.className = 'edit__btn edit__cancel'
@@ -92,6 +93,35 @@ export const createEditCategory = (parent) => {
 
     })
 
+    function parseData (){
+      const cellsMain = document.querySelectorAll('.table__cell_one')
+      const cellsSecond = document.querySelectorAll('.table__cell_two')
+
+      const pairs = []
+
+      const data = {
+        pairs:[],
+      }
+
+      for(let i = 0; i < cellsMain.length; i++){
+        let textMain = cellsMain[i].textContent.trim()
+        let textSecond = cellsSecond[i].textContent.trim()
+        if(textMain && textSecond){
+          data.pairs.push([textMain, textSecond])
+        }
+      }
+      
+      if(title.textContent.trim() && title.textContent !== TITLE){
+        data.title = title.textContent.trim()
+      }
+
+      if(btnSave.dataset.id){
+        data.id = btnSave.dataset.id
+      }
+      console.log(data)
+      return data
+    }
+
 
     const mount = (data = {title:TITLE, pairs:[]}) =>{
         table.querySelector('tbody').textContent = ''
@@ -104,6 +134,10 @@ export const createEditCategory = (parent) => {
         const rows = data.pairs.map(createTRCell)
         table.querySelector('tbody').append(...rows)
         parent.append(section)
+
+        btnSave.dataset.id = data.id ? data.id: ''
+
+        parseData()
     }
 
 
@@ -112,31 +146,5 @@ export const createEditCategory = (parent) => {
     }
 
 
-    return {mount, unmount}
+    return {mount, unmount, parseData, btnSave, btnCancel}
 }
-{/* <section class="edit section-offset">
-      <div class="container edit__container">
-        <h2 class="edit__title" contenteditable="true" title="Можно редактировать">Семья</h2>
-        <table class="edit__table table">
-          <thead>
-            <tr>
-              <th class="table__cell">main</th>
-              <th class="table__cell">second</th>
-              <th class="table__cell"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="table__cell table__cell_one" contenteditable="true">брат</td>
-              <td class="table__cell table__cell_two" contenteditable="true">brother</td>
-              <td class="table__cell"><button class="table__del">x</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="edit__btn-wrapper">
-          <button class="edit__btn edit__add-row">Добавить пару</button>
-          <button class="edit__btn edit__save" data-id="bczp358gktzy">Сохранить категорию</button>
-          <button class="edit__btn edit__cancel">Отмена</button>
-        </div>
-      </div>
-    </section> */}
