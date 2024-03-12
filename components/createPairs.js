@@ -34,7 +34,7 @@ export const createPairs = (parent) => {
   section.append(container);
 
   function flipCard() {
-    console.log(btnItem.index)
+   
     btnItem.classList.add("card__item_flipped");
     btnItem.removeEventListener("click", flipCard);
     setTimeout(() => {
