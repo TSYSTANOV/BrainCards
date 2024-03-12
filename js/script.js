@@ -54,10 +54,11 @@ const initApp = async () => {
           showAlert(result.error.message)
           return
         }
+        showAlert(`Категория удалена!`)
+        categoryItem.remove()
+        return;
       }
-      showAlert(`Категория удалена!`)
-      categoryItem.remove()
-      return;
+      
     }
   });
 
